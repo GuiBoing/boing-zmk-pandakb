@@ -1,0 +1,7 @@
+file_format: "1"
+id: eyelash_dongle_adapter
+name: eyelash_dongle_adapter
+type: shield
+url: https://item.taobao.com/item.htm?id=921439972117&mi_id=0000kcR0m2CmIkRCaB6OPSwGndjEz0vBuUKQfCb8Rnvz1JQ&spm=a21n57.shop_search.0.0.7766ubSCubSCw7
+requires: [i2c_oled]
+

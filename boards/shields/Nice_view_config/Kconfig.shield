@@ -1,0 +1,2 @@
+config SHIELD_NICE_VIEW_CONFIG
+    def_bool $(shields_list_contains,Nice_view_config)

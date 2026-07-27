@@ -1,0 +1,16 @@
+file_format: "1"
+id: Sofle
+name: Sofle
+type: shield
+url: https://pandakb.com
+requires: [nice!nano]
+exposes: [i2c_oled]
+features:
+  - keys
+  - display
+  - studio
+  - underglow
+  - encoder
+siblings:
+  - Sofle_left
+  - Sofle_right

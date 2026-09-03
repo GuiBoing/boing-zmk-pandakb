@@ -33,26 +33,26 @@ manifest:
   - name: zmk-nice-oled
     remote: mctechnology17
     revision: main
-  # - name: nice-view-elemental
-  #   remote: kevinpastor
-  #   revision: main
-  # - name: nice-view-gem
-  #   remote: m165437
-  #   revision: main
-  # - name: zmk-shield-nice-view-cats
-  #   remote: s6t
-  #   revision: main
-  # - name: nice-view-battery
-  #   remote: infely
-  #   revision: main
-  # - name: zmk-dongle-screen
-  #   remote: penguinchat
-  #   revision: Penguinchat-patch-1
-  # - name: zmk-for-PandaKB.com-
-  #   remote: penguinchat
-  #   revision: PandaKB_Lily58
-  # - name: zmk-dongle-display
-  #   remote: englmaxi
-  #   revision: v0.3
+  - name: nice-view-elemental
+    remote: kevinpastor
+    revision: main
+  - name: nice-view-gem
+    remote: m165437
+    revision: main
+  - name: zmk-shield-nice-view-cats
+    remote: s6t
+    revision: main
+  - name: nice-view-battery
+    remote: infely
+    revision: main
+  - name: zmk-dongle-screen
+    remote: penguinchat
+    revision: Penguinchat-patch-1
+  - name: zmk-for-PandaKB.com-
+    remote: penguinchat
+    revision: PandaKB_Lily58
+  - name: zmk-dongle-display
+    remote: englmaxi
+    revision: v0.3
   self:
     path: config

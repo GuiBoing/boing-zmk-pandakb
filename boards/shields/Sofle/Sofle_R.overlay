@@ -23,6 +23,14 @@
 &right_encoder {
     status = "okay";
 };
+
+// Right OLED is mounted 180 degrees rotated relative to the left one;
+// clearing both remap flags flips it back to center/correct orientation.
+&oled {
+    /delete-property/ segment-remap;
+    /delete-property/ com-invdir;
+};
+
 / {
     chosen {
       zmk,battery = &vbatt;

@@ -28,6 +28,11 @@ if LVGL
 config LV_Z_BITS_PER_PIXEL
     default 1
 
+# Correct VDB size for this panel's resolution (128x32), regardless of
+# which status screen renders into it.
+config LV_Z_VDB_SIZE
+    default 64
+
 choice LV_COLOR_DEPTH
     default LV_COLOR_DEPTH_1
 endchoice
@@ -36,15 +41,13 @@ endif # LVGL
 
 endif
 
-# zmk-nice-oled renders into a rotated 32x128 canvas internally and needs this
-# specific VDB/DPI tuning to match; the built-in ZMK status screen (native
-# shields) does not rotate anything and breaks if these are forced on it.
+# zmk-nice-oled renders into a rotated 32x128 canvas internally and derives its
+# widget pixel positions against this specific DPI; the built-in ZMK status
+# screen (native shields) picks its theme font size from DPI_DEF too, and 148
+# is tuned for nice_oled's canvas, not the built-in screen's own layout.
 if SHIELD_SOFLE_L || SHIELD_SOFLE_R
 
 if LVGL
-
-config LV_Z_VDB_SIZE
-    default 64
 
 config LV_DPI_DEF
     default 148

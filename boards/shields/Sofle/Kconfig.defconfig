@@ -25,18 +25,29 @@ endif # ZMK_DISPLAY
 
 if LVGL
 
-config LV_Z_VDB_SIZE
-    default 64
-
-config LV_DPI_DEF
-    default 148
-
 config LV_Z_BITS_PER_PIXEL
     default 1
 
 choice LV_COLOR_DEPTH
     default LV_COLOR_DEPTH_1
 endchoice
+
+endif # LVGL
+
+endif
+
+# zmk-nice-oled renders into a rotated 32x128 canvas internally and needs this
+# specific VDB/DPI tuning to match; the built-in ZMK status screen (native
+# shields) does not rotate anything and breaks if these are forced on it.
+if SHIELD_SOFLE_L || SHIELD_SOFLE_R
+
+if LVGL
+
+config LV_Z_VDB_SIZE
+    default 64
+
+config LV_DPI_DEF
+    default 148
 
 endif # LVGL
 

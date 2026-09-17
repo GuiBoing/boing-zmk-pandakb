@@ -6,3 +6,9 @@ config SHIELD_SOFLE_L
 
 config SHIELD_SOFLE_R
     def_bool $(shields_list_contains,Sofle_R)
+
+config SHIELD_SOFLE_L_NATIVE
+    def_bool $(shields_list_contains,Sofle_L_native)
+
+config SHIELD_SOFLE_R_NATIVE
+    def_bool $(shields_list_contains,Sofle_R_native)

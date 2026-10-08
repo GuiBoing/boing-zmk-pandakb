@@ -29,10 +29,12 @@
 
     behaviors {
         // ABNT2-style accent key for US-International: ' (acute) / shift: ` (grave)
+
         acute: acute_grave {
             compatible = "zmk,behavior-mod-morph";
             #binding-cells = <0>;
             bindings = <&kp SQT>, <&kp GRAVE>;
+
             mods = <(MOD_LSFT|MOD_RSFT)>;
         };
     };
@@ -46,7 +48,7 @@
         };
 
         game_time {
-            bindings = <&to 0>;
+            bindings = <&to 4>;
             key-positions = <6 7 5 4>;
         };
 
@@ -66,6 +68,7 @@
 
         default_layer {
             display-name = "Base";
+
             // ------------------------------------------------------------------------------------------------------------
             // |   `   |  1  |  2  |  3   |  4   |  5   |                   |  6   |  7    |  8    |  9   |   0   |       |
             // |  ESC  |  Q  |  W  |  E   |  R   |  T   |                   |  Y   |  U    |  I    |  O   |   P   | BKSPC |
@@ -77,7 +80,7 @@
 &kp ESCAPE      &kp N1  &kp N2    &kp N3    &kp N4     &kp N5                                 &kp N6  &kp N7         &kp N8     &kp N9    &kp N0         &kp BACKSPACE
 &kp TAB         &kp Q   &kp W     &kp E     &kp R      &kp T                                  &kp Y   &kp U          &kp I      &kp O     &kp P          &acute
 &kp LEFT_SHIFT  &kp A   &kp S     &kp D     &kp F      &kp G                                  &kp H   &kp J          &kp K      &kp L     &kp RA(COMMA)  &kp TILDE
-&kp LCTRL       &kp Z   &kp X     &kp C     &kp V      &kp B   &kp C_MUTE    &rgb_ug RGB_TOG  &kp N   &kp M          &kp COMMA  &kp DOT   &kp SQT        &kp SLASH
+&kp LCTRL       &kp Z   &kp X     &kp C     &kp V      &kp B   &kp C_MUTE    &rgb_ug RGB_TOG  &kp N   &kp M          &kp COMMA  &kp DOT   &kp SEMICOLON  &kp SLASH
                         &kp LGUI  &kp LALT  &kp LCTRL  &mo 1   &kp SPACE     &kp ENTER        &mo 2   &kp BACKSPACE  &kp RALT   &kp RGUI
             >;
 
@@ -86,6 +89,7 @@
 
         lower_layer {
             display-name = "Symbols";
+
             // TODO: Some binds are waiting for shifted keycode support.
             // ------------------------------------------------------------------------------------------------------------
             // |       |  F1 |  F2 |  F3  |  F4  |  F5  |                   |  F6  |  F7   |  F8   |  F9  |  F10  |  F11  |
@@ -107,6 +111,7 @@
 
         raise_layer {
             display-name = "Nav";
+
             // ------------------------------------------------------------------------------------------------------------
             // | BTCLR | BT1  | BT2  |  BT3  |  BT4  |  BT5 |                |      |      |       |      |       |       |
             // |       | INS  | PSCR | GUI   |       |      |                | PGUP |      |   ^   |      |       |       |
@@ -115,11 +120,11 @@
             //                |      |       |       |      |      |  |      |      |      |       |      |
 
             bindings = <
-&bt BT_CLR  &bt BT_SEL 0      &bt BT_SEL 1  &bt BT_SEL 2   &bt BT_SEL 3    &bt BT_SEL 4                    &none      &kp HOME  &none     &kp END    &none    &none
-&none       &kp INS           &kp PSCRN     &kp K_CMENU    &none           &none                           &kp PG_UP  &none     &kp UP    &none      &kp N0   &none
-&trans      &kp C_PLAY_PAUSE  &kp C_RW      &kp C_FF       &none           &none                           &kp PG_DN  &kp LEFT  &kp DOWN  &kp RIGHT  &kp DEL  &kp BSPC
-&none       &kp LC(Z)         &kp LC(X)     &kp LC(C)      &kp LC(V)       &none         &trans    &trans  &none      &none     &none     &none      &none    &none
-                              &trans        &trans         &trans          &trans        &trans    &trans  &trans     &trans    &trans    &trans
+&bt BT_CLR  &bt BT_SEL 0      &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4                    &none      &kp HOME  &none     &kp END    &none    &none
+&none       &kp INS           &kp PSCRN     &kp K_CMENU   &none         &none                           &kp PG_UP  &none     &kp UP    &none      &kp N0   &none
+&trans      &kp C_PLAY_PAUSE  &kp C_RW      &kp C_FF      &none         &none                           &kp PG_DN  &kp LEFT  &kp DOWN  &kp RIGHT  &kp DEL  &kp BSPC
+&none       &kp LC(Z)         &kp LC(X)     &kp LC(C)     &kp LC(V)     &none         &trans    &trans  &none      &none     &none     &none      &none    &none
+                              &trans        &trans        &trans        &trans        &trans    &trans  &trans     &trans    &trans    &trans
             >;
 
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
@@ -146,16 +151,18 @@
         gametime {
             display-name = "Game";
             bindings = <
-&kp ESCAPE      &kp N1  &kp N2    &kp N3    &kp N4     &kp N5                                 &kp N6  &kp N7         &kp N8     &kp N9    &kp N0         &kp DELETE
-&kp TAB         &kp Q   &kp W     &kp E     &kp R      &kp T                                  &kp Y   &kp U          &kp I      &kp O     &kp P          &acute
-&kp LEFT_SHIFT  &kp A   &kp S     &kp D     &kp F      &kp G                                  &kp H   &kp J          &kp K      &kp L     &kp RA(COMMA)  &kp TILDE
-&kp LCTRL       &kp Z   &kp X     &kp C     &kp V      &kp B   &kp C_MUTE    &rgb_ug RGB_TOG  &kp N   &kp M          &kp COMMA  &kp DOT   &kp SQT        &kp SLASH
-                        &kp LGUI  &kp LALT  &kp LCTRL  &mo 1   &kp SPACE     &kp ENTER        &mo 2   &kp BACKSPACE  &kp RALT   &kp RGUI
+&kp SINGLE_QUOTE  &kp N1  &kp N2      &kp N3  &kp N4        &kp N5                                           &none  &none  &none  &none  &none  &none
+&kp TAB           &kp Q   &kp W       &kp E   &kp R         &kp T                                            &none  &none  &none  &none  &none  &acute
+&kp LEFT_SHIFT    &kp A   &kp S       &kp D   &kp F         &kp G                                            &none  &none  &none  &none  &none  &none
+&kp LCTRL         &kp Z   &kp X       &kp C   &kp V         &kp B             &kp C_MUTE    &rgb_ug RGB_TOG  &none  &none  &none  &none  &none  &none
+                          &kp ESCAPE  &to 0   &kp LEFT_ALT  &kp LEFT_CONTROL  &kp SPACE     &none            &none  &none  &none  &none
             >;
 
             sensor-bindings =
                 <&inc_dec_kp C_VOL_UP C_VOL_DN>,
                 <&inc_dec_kp PG_UP PG_DN>;
+
+            label = "fps";
         };
     };
 };

@@ -6,12 +6,13 @@
  * native landscape orientation (portrait top -> native left):
  *
  *   +--------+
- *   |[###] <>|  16px status: battery icon + link ("<>" linked, "--" not)
- *   |  85%   |
- *   |        |
- *   |  art   |  32x112 Hammerbeam art (art.c, already pre-rotated),
- *   |        |  changes every CONFIG_SOFLE_ART_INTERVAL_MS
+ *   |[###]  v|  8px status: battery icon + check (linked to the left half)
+ *   |        |               or X (not linked)
+ *   |  art   |  32x66 Hammerbeam art (art.c, already pre-rotated),
+ *   |        |  centered, changes every CONFIG_SOFLE_ART_INTERVAL_MS
  *   +--------+
+ *
+ * Battery % is not shown here: the left OLED already shows both halves.
  *
  * The status area is drawn on a hidden portrait canvas and copied pixel by
  * pixel, rotated, into the visible native canvas. If everything shows up
@@ -23,8 +24,6 @@
  *
  * SPDX-License-Identifier: MIT
  */
-
-#include <stdio.h>
 
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
@@ -40,15 +39,41 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include <zmk/events/split_peripheral_status_changed.h>
 #include <zmk/split/bluetooth/peripheral.h>
 
-/* portrait status area */
+/* portrait geometry */
+#define SCREEN_H 128
 #define STATUS_W 32
-#define STATUS_H 16
+#define STATUS_H 8
+#define ART_W 32
+#define ART_H 66
 
 #define BATT_W 14
 #define BATT_H 7
 
+#define ICON_SIZE 7
+
 extern const lv_img_dsc_t *sofle_art_imgs[];
 extern const uint8_t sofle_art_count;
+
+/* 7x7 icons, one byte per row, MSB = leftmost of 7 pixels (bit 6) */
+static const uint8_t icon_check[ICON_SIZE] = {
+    0x00, /* ....... */
+    0x01, /* ......# */
+    0x02, /* .....#. */
+    0x04, /* ....#.. */
+    0x48, /* #..#... */
+    0x30, /* .##.... */
+    0x00, /* ....... */
+};
+
+static const uint8_t icon_x[ICON_SIZE] = {
+    0x41, /* #.....# */
+    0x22, /* .#...#. */
+    0x14, /* ..#.#.. */
+    0x08, /* ...#... */
+    0x14, /* ..#.#.. */
+    0x22, /* .#...#. */
+    0x41, /* #.....# */
+};
 
 static lv_obj_t *art_img;
 static uint8_t art_index;
@@ -56,7 +81,7 @@ static uint8_t art_index;
 static lv_color_t fg;
 static lv_color_t bg;
 
-/* hidden portrait canvas (32x16) and visible native canvas (16x32) */
+/* hidden portrait canvas (32x8) and visible native canvas (8x32) */
 static lv_obj_t *status_portrait;
 static lv_obj_t *status_native;
 static lv_color_t portrait_buf[STATUS_W * STATUS_H];
@@ -85,19 +110,17 @@ static void draw_rect(lv_obj_t *canvas, lv_coord_t x, lv_coord_t y, lv_coord_t w
     lv_canvas_draw_rect(canvas, x, y, w, h, &dsc);
 }
 
-static void draw_text(lv_obj_t *canvas, lv_coord_t x, lv_coord_t y, lv_coord_t w,
-                      lv_text_align_t align, const char *text) {
-    lv_draw_label_dsc_t dsc;
-    lv_draw_label_dsc_init(&dsc);
-    dsc.color = fg;
-    dsc.font = &lv_font_unscii_8;
-    dsc.align = align;
-    lv_canvas_draw_text(canvas, x, y, w, &dsc, text);
+static void draw_icon(lv_obj_t *canvas, lv_coord_t x0, lv_coord_t y0, const uint8_t *icon) {
+    for (lv_coord_t y = 0; y < ICON_SIZE; y++) {
+        for (lv_coord_t x = 0; x < ICON_SIZE; x++) {
+            if (icon[y] & (1 << (ICON_SIZE - 1 - x))) {
+                lv_canvas_set_px_color(canvas, x0 + x, y0 + y, fg);
+            }
+        }
+    }
 }
 
 static void sofle_periph_update_cb(struct sofle_periph_state state) {
-    char text[8];
-
     if (status_portrait == NULL || status_native == NULL) {
         return;
     }
@@ -113,12 +136,8 @@ static void sofle_periph_update_cb(struct sofle_periph_state state) {
     }
     draw_rect(status_portrait, BATT_W, 2, 1, 3, fg);
 
-    /* link */
-    draw_text(status_portrait, 16, 0, 16, LV_TEXT_ALIGN_RIGHT, state.connected ? "<>" : "--");
-
-    /* percentage */
-    snprintf(text, sizeof(text), "%u%%", state.level);
-    draw_text(status_portrait, 0, 8, STATUS_W, LV_TEXT_ALIGN_CENTER, text);
+    /* link to the left half */
+    draw_icon(status_portrait, STATUS_W - ICON_SIZE, 0, state.connected ? icon_check : icon_x);
 
     /* rotate 90 deg CCW: native(x, y) = portrait(STATUS_W - 1 - y, x) */
     for (lv_coord_t y = 0; y < STATUS_W; y++) {
@@ -151,7 +170,7 @@ ZMK_SUBSCRIPTION(widget_sofle_periph, zmk_split_peripheral_status_changed);
 lv_obj_t *zmk_display_status_screen() {
     lv_obj_t *screen = lv_obj_create(NULL);
 
-    /* use the theme's colors so text/icons match the rest of the UI */
+    /* use the theme's colors so icons match the rest of the UI */
     fg = lv_obj_get_style_text_color(screen, LV_PART_MAIN);
     bg = lv_obj_get_style_bg_color(screen, LV_PART_MAIN);
 
@@ -164,11 +183,12 @@ lv_obj_t *zmk_display_status_screen() {
     lv_canvas_set_buffer(status_native, native_buf, STATUS_H, STATUS_W, LV_IMG_CF_TRUE_COLOR);
     lv_obj_align(status_native, LV_ALIGN_TOP_LEFT, 0, 0);
 
-    /* art slideshow: native 112x32, right of the status area */
+    /* art slideshow: native 66x32, centered in the space below the status */
     art_index = 0;
     art_img = lv_img_create(screen);
     lv_img_set_src(art_img, sofle_art_imgs[art_index]);
-    lv_obj_align(art_img, LV_ALIGN_TOP_LEFT, STATUS_H, 0);
+    lv_obj_align(art_img, LV_ALIGN_TOP_LEFT,
+                 STATUS_H + (SCREEN_H - STATUS_H - ART_H) / 2, 0);
     lv_timer_create(art_timer_cb, CONFIG_SOFLE_ART_INTERVAL_MS, NULL);
 
     widget_sofle_periph_init();

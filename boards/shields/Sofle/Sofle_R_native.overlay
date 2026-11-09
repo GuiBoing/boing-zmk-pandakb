@@ -37,6 +37,8 @@
     };
 
     vbatt: vbatt {
-        compatible = "zmk,battery-nrf-vddh";
+        // LiPo discharge curve + median + slew limiter (src/battery_nrf_vddh_curve.c)
+        // instead of ZMK's linear 4.20V -> 3.45V mapping.
+        compatible = "codekeeb,battery-nrf-vddh-curve";
     };
 };

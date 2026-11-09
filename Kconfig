@@ -1,0 +1,13 @@
+# SPDX-License-Identifier: MIT
+
+DT_COMPAT_CODEKEEB_BATTERY_NRF_VDDH_CURVE := codekeeb,battery-nrf-vddh-curve
+
+config CODEKEEB_BATTERY_NRF_VDDH_CURVE
+    bool
+    default $(dt_compat_enabled,$(DT_COMPAT_CODEKEEB_BATTERY_NRF_VDDH_CURVE))
+    select ADC
+    select ZMK_BATTERY
+    depends on SENSOR
+    help
+      nRF52 VDDH battery driver using a real LiPo discharge curve instead of
+      ZMK's linear 4.20V -> 3.45V approximation.

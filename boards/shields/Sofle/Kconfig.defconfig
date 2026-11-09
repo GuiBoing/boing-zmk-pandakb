@@ -40,9 +40,10 @@ endif # LVGL
 
 endif
 
-# Left (central) uses its own status screen (custom_status_screen.c) to show
-# the battery of both halves. Mirrors what the built-in screen would enable.
-if SHIELD_SOFLE_L_NATIVE && ZMK_DISPLAY
+# Both halves use their own status screen: left = custom_status_screen.c
+# (battery of both halves), right = peripheral_status_screen.c (battery/link
+# bar + Hammerbeam art). Mirrors what the built-in screen would enable.
+if (SHIELD_SOFLE_L_NATIVE || SHIELD_SOFLE_R_NATIVE) && ZMK_DISPLAY
 
 choice ZMK_DISPLAY_STATUS_SCREEN
     default ZMK_DISPLAY_STATUS_SCREEN_CUSTOM
@@ -60,5 +61,18 @@ config LV_FONT_MONTSERRAT_16
 choice LV_FONT_DEFAULT
     default LV_FONT_DEFAULT_MONTSERRAT_16
 endchoice
+
+endif
+
+if SHIELD_SOFLE_R_NATIVE && ZMK_DISPLAY
+
+config LV_FONT_UNSCII_8
+    default y
+
+config LV_USE_LABEL
+    default y
+
+config LV_USE_IMG
+    default y
 
 endif

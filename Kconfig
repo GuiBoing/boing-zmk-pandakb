@@ -11,3 +11,10 @@ config CODEKEEB_BATTERY_NRF_VDDH_CURVE
     help
       nRF52 VDDH battery driver using a real LiPo discharge curve instead of
       ZMK's linear 4.20V -> 3.45V approximation.
+
+config SOFLE_ART_INTERVAL_MS
+    int "Right OLED: milliseconds between Hammerbeam art images"
+    default 10000
+
+config SOFLE_ART_INVERTED
+    bool "Right OLED: invert Hammerbeam art colors"

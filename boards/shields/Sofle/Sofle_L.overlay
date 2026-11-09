@@ -29,3 +29,13 @@
         compatible = "zmk,battery-nrf-vddh";
     };
 };
+
+// Soft off: sem uma fonte de wakeup explicita o ZMK so sai do soft off por
+// reset/power cycle. Usa a propria matriz como waker: qualquer tecla da
+// metade esquerda religa o central.
+/ {
+    soft_off_wakers {
+        compatible = "zmk,soft-off-wakeup-sources";
+        wakeup-sources = <&kscan0>;
+    };
+};

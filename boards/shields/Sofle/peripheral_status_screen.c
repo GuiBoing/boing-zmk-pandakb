@@ -8,7 +8,7 @@
  *   +--------+
  *   |[###]  v|  8px status: battery icon + check (linked to the left half)
  *   |        |               or X (not linked)
- *   |  art   |  32x66 Hammerbeam art (art.c, already pre-rotated),
+ *   |  art   |  32x119 Hammerbeam art (art.c, already pre-rotated),
  *   |        |  centered, changes every CONFIG_SOFLE_ART_INTERVAL_MS
  *   +--------+
  *
@@ -44,7 +44,7 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #define STATUS_W 32
 #define STATUS_H 8
 #define ART_W 32
-#define ART_H 66
+#define ART_H 119
 
 #define BATT_W 14
 #define BATT_H 7
@@ -183,7 +183,7 @@ lv_obj_t *zmk_display_status_screen() {
     lv_canvas_set_buffer(status_native, native_buf, STATUS_H, STATUS_W, LV_IMG_CF_TRUE_COLOR);
     lv_obj_align(status_native, LV_ALIGN_TOP_LEFT, 0, 0);
 
-    /* art slideshow: native 66x32, centered in the space below the status */
+    /* art slideshow: native 119x32, centered in the space below the status */
     art_index = 0;
     art_img = lv_img_create(screen);
     lv_img_set_src(art_img, sofle_art_imgs[art_index]);

@@ -12,5 +12,5 @@ features:
   - underglow
   - encoder
 siblings:
-  - Sofle_left
-  - Sofle_right
+  - Sofle_L_native
+  - Sofle_R_native

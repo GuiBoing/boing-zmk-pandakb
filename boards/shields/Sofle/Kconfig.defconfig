@@ -1,4 +1,4 @@
-if SHIELD_SOFLE_L || SHIELD_SOFLE_L_NATIVE
+if SHIELD_SOFLE_L_NATIVE
 
 config ZMK_KEYBOARD_NAME
     default "Sofle"
@@ -8,7 +8,7 @@ config ZMK_SPLIT_ROLE_CENTRAL
 
 endif
 
-if SHIELD_SOFLE_L || SHIELD_SOFLE_R || SHIELD_SOFLE_L_NATIVE || SHIELD_SOFLE_R_NATIVE
+if SHIELD_SOFLE_L_NATIVE || SHIELD_SOFLE_R_NATIVE
 
 config ZMK_SPLIT
     default y
@@ -28,8 +28,7 @@ if LVGL
 config LV_Z_BITS_PER_PIXEL
     default 1
 
-# Correct VDB size for this panel's resolution (128x32), regardless of
-# which status screen renders into it.
+# Correct VDB size for this panel's resolution (128x32).
 config LV_Z_VDB_SIZE
     default 64
 
@@ -41,17 +40,25 @@ endif # LVGL
 
 endif
 
-# zmk-nice-oled renders into a rotated 32x128 canvas internally and derives its
-# widget pixel positions against this specific DPI; the built-in ZMK status
-# screen (native shields) picks its theme font size from DPI_DEF too, and 148
-# is tuned for nice_oled's canvas, not the built-in screen's own layout.
-if SHIELD_SOFLE_L || SHIELD_SOFLE_R
+# Left (central) uses its own status screen (custom_status_screen.c) to show
+# the battery of both halves. Mirrors what the built-in screen would enable.
+if SHIELD_SOFLE_L_NATIVE && ZMK_DISPLAY
 
-if LVGL
+choice ZMK_DISPLAY_STATUS_SCREEN
+    default ZMK_DISPLAY_STATUS_SCREEN_CUSTOM
+endchoice
 
-config LV_DPI_DEF
-    default 148
+config LV_Z_MEM_POOL_SIZE
+    default 4096
 
-endif # LVGL
+config LV_USE_THEME_MONO
+    default y
+
+config LV_FONT_MONTSERRAT_16
+    default y
+
+choice LV_FONT_DEFAULT
+    default LV_FONT_DEFAULT_MONTSERRAT_16
+endchoice
 
 endif

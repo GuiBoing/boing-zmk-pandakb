@@ -72,6 +72,9 @@ config LV_FONT_UNSCII_8
 config LV_USE_LABEL
     default y
 
+config LV_USE_CANVAS
+    default y
+
 config LV_USE_IMG
     default y
 

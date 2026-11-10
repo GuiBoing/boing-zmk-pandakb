@@ -24,12 +24,6 @@
     status = "okay";
 };
 
-// OLED direito montado girado 180 graus
-&oled {
-    /delete-property/ segment-remap;
-    /delete-property/ com-invdir;
-};
-
 / {
     chosen {
       zmk,battery = &vbatt;

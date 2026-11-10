@@ -1,10 +1,9 @@
 include:
-# Sofle OLED - native ZMK widgets, no external display module
 - board: nice_nano_v2
   shield: Sofle_L_native
-  artifact-name: Sofle_left_native
+  artifact-name: Sofle_left
 - board: nice_nano_v2
-  shield: Sofle_R_native
-  artifact-name: Sofle_right_native
+  shield: Sofle_R_native nice_oled
+  artifact-name: Sofle_right
 - board: nice_nano_v2
   shield: settings_reset

@@ -60,3 +60,11 @@ choice LV_FONT_DEFAULT
 endchoice
 
 endif
+
+# nice_oled na direita: layout calibrado para DPI 148
+if SHIELD_SOFLE_R_NATIVE && LVGL
+
+config LV_DPI_DEF
+    default 148
+
+endif

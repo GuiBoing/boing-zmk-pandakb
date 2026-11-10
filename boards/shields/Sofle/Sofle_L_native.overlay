@@ -26,15 +26,11 @@
     };
 
     vbatt: vbatt {
-        // LiPo discharge curve + median + slew limiter (src/battery_nrf_vddh_curve.c)
-        // instead of ZMK's linear 4.20V -> 3.45V mapping.
         compatible = "codekeeb,battery-nrf-vddh-curve";
     };
 };
 
-// Soft off: sem uma fonte de wakeup explicita o ZMK so sai do soft off por
-// reset/power cycle. Usa a propria matriz como waker: qualquer tecla da
-// metade esquerda religa o central.
+// Qualquer tecla da esquerda acorda do soft off
 / {
     soft_off_wakers {
         compatible = "zmk,soft-off-wakeup-sources";

@@ -24,8 +24,7 @@
     status = "okay";
 };
 
-// Right OLED is mounted 180 degrees rotated relative to the left one;
-// clearing both remap flags flips it back to center/correct orientation.
+// OLED direito montado girado 180 graus
 &oled {
     /delete-property/ segment-remap;
     /delete-property/ com-invdir;
@@ -37,8 +36,6 @@
     };
 
     vbatt: vbatt {
-        // LiPo discharge curve + median + slew limiter (src/battery_nrf_vddh_curve.c)
-        // instead of ZMK's linear 4.20V -> 3.45V mapping.
         compatible = "codekeeb,battery-nrf-vddh-curve";
     };
 };

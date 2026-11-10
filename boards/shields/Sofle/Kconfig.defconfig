@@ -28,7 +28,6 @@ if LVGL
 config LV_Z_BITS_PER_PIXEL
     default 1
 
-# Correct VDB size for this panel's resolution (128x32).
 config LV_Z_VDB_SIZE
     default 64
 
@@ -40,8 +39,7 @@ endif # LVGL
 
 endif
 
-# Left (central) uses its own status screen (custom_status_screen.c) to show
-# the battery of both halves. Mirrors what the built-in screen would enable.
+# Tela custom na esquerda (custom_status_screen.c)
 if SHIELD_SOFLE_L_NATIVE && ZMK_DISPLAY
 
 choice ZMK_DISPLAY_STATUS_SCREEN
